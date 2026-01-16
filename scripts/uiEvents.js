@@ -8,6 +8,24 @@ window.FutureHoops.uiEvents = (() => {
   const { data, calc, sim, stepEditor } = window.FutureHoops;
   const settingsApi = window.FutureHoops.settings;
   let activeModal = null;
+  let confirmAction = null;
+
+  function openConfirmModal({ title, message, confirmLabel, onConfirm }) {
+    if (elements.confirmActionModalTitle) {
+      elements.confirmActionModalTitle.textContent = title || "Confirm Action";
+    }
+    if (elements.confirmActionModalBody) {
+      elements.confirmActionModalBody.innerHTML = "";
+      const para = document.createElement("p");
+      para.textContent = message || "Are you sure you want to continue?";
+      elements.confirmActionModalBody.appendChild(para);
+    }
+    if (elements.confirmActionModalConfirm) {
+      elements.confirmActionModalConfirm.textContent = confirmLabel || "Confirm";
+    }
+    confirmAction = typeof onConfirm === "function" ? onConfirm : null;
+    openModal(elements.confirmActionModal);
+  }
 
   function setModalVisible(modal, visible) {
     if (!modal) {
@@ -44,6 +62,9 @@ window.FutureHoops.uiEvents = (() => {
     setModalVisible(modal, false);
     if (activeModal === modal) {
       activeModal = null;
+    }
+    if (modal === elements.confirmActionModal) {
+      confirmAction = null;
     }
   }
 
@@ -175,6 +196,12 @@ window.FutureHoops.uiEvents = (() => {
       });
     }
 
+    if (elements.settingsChangelogButton) {
+      elements.settingsChangelogButton.addEventListener("click", () => {
+        openModal(elements.settingsChangelogModal);
+      });
+    }
+
     if (elements.settingsOverviewInfo) {
       elements.settingsOverviewInfo.addEventListener("click", () => {
         openModal(elements.settingsOverviewModal);
@@ -210,6 +237,29 @@ window.FutureHoops.uiEvents = (() => {
     if (elements.settingsOverviewModalClose) {
       elements.settingsOverviewModalClose.addEventListener("click", () => {
         closeModal(elements.settingsOverviewModal);
+      });
+    }
+
+    if (elements.settingsChangelogModalClose) {
+      elements.settingsChangelogModalClose.addEventListener("click", () => {
+        closeModal(elements.settingsChangelogModal);
+      });
+    }
+
+    if (elements.confirmActionModalCancel) {
+      elements.confirmActionModalCancel.addEventListener("click", () => {
+        confirmAction = null;
+        closeModal(elements.confirmActionModal);
+      });
+    }
+
+    if (elements.confirmActionModalConfirm) {
+      elements.confirmActionModalConfirm.addEventListener("click", () => {
+        if (confirmAction) {
+          confirmAction();
+        }
+        confirmAction = null;
+        closeModal(elements.confirmActionModal);
       });
     }
 
@@ -447,7 +497,14 @@ window.FutureHoops.uiEvents = (() => {
         if (designerState.previewRunner) {
           return;
         }
-        ui.clearDesignerRoutes?.();
+        openConfirmModal({
+          title: "Clear Routes",
+          message: "Clear all routes in the current step? This cannot be undone.",
+          confirmLabel: "Clear Routes",
+          onConfirm: () => {
+            ui.clearDesignerRoutes?.();
+          }
+        });
       });
     }
 
@@ -456,7 +513,14 @@ window.FutureHoops.uiEvents = (() => {
         if (designerState.previewRunner) {
           return;
         }
-        ui.clearDesignerPasses?.();
+        openConfirmModal({
+          title: "Clear Passes",
+          message: "Clear all passes in the current step? This cannot be undone.",
+          confirmLabel: "Clear Passes",
+          onConfirm: () => {
+            ui.clearDesignerPasses?.();
+          }
+        });
       });
     }
 
@@ -1000,7 +1064,15 @@ window.FutureHoops.uiEvents = (() => {
 
     if (elements.designerDeletePlay) {
       elements.designerDeletePlay.addEventListener("click", () => {
-        ui.deleteSelectedDesignerPlay?.();
+        const playName = designerState.play?.name ? `"${designerState.play.name}"` : "this play";
+        openConfirmModal({
+          title: "Delete Play",
+          message: `Delete ${playName}? This cannot be undone.`,
+          confirmLabel: "Delete Play",
+          onConfirm: () => {
+            ui.deleteSelectedDesignerPlay?.();
+          }
+        });
       });
     }
 

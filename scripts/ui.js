@@ -98,29 +98,18 @@ window.FutureHoops.ui = window.FutureHoops.ui || {};
   }
 
   function syncMobileToggles(tab) {
-    const show = state.isMobile && (tab === "designer" || tab === "game");
-    const advancedEnabled = settingsApi?.isAdvancedModeEnabled
-      ? settingsApi.isAdvancedModeEnabled()
-      : settingsApi?.getSetting
-        ? settingsApi.getSetting("advancedMode") === true
-        : false;
+    const show = state.isMobile && tab === "designer";
     if (elements.mobileLeftToggle) {
       elements.mobileLeftToggle.classList.toggle("is-hidden", !show);
     }
     if (elements.mobileRightToggle) {
-      const showRight = show && (tab === "game" || advancedEnabled);
-      elements.mobileRightToggle.classList.toggle("is-hidden", !showRight);
+      elements.mobileRightToggle.classList.toggle("is-hidden", !show);
     }
     if (!show) {
       return;
     }
-    if (tab === "game") {
-      elements.mobileLeftToggle.textContent = "HUD";
-      elements.mobileRightToggle.textContent = "Log";
-    } else {
-      elements.mobileLeftToggle.textContent = "Tools";
-      elements.mobileRightToggle.textContent = "Context";
-    }
+    elements.mobileLeftToggle.textContent = "Tools";
+    elements.mobileRightToggle.textContent = "Play Details";
   }
 
   function syncMobileLayout() {
@@ -133,15 +122,7 @@ window.FutureHoops.ui = window.FutureHoops.ui || {};
     }
     if (tab === "designer") {
       moveMobileElement(elements.designerToolsPanel, elements.mobileLeftContent);
-      moveMobileElement(elements.designerDetailsPanel, elements.mobileLeftContent);
-      const advancedEnabled = settingsApi?.isAdvancedModeEnabled
-        ? settingsApi.isAdvancedModeEnabled()
-        : settingsApi?.getSetting
-          ? settingsApi.getSetting("advancedMode") === true
-          : false;
-      if (advancedEnabled) {
-        moveMobileElement(elements.designerContextBlock, elements.mobileRightContent);
-      }
+      moveMobileElement(elements.designerDetailsPanel, elements.mobileRightContent);
     } else if (tab === "game") {
       moveMobileElement(elements.gameStatsPanel, elements.mobileLeftContent);
       moveMobileElement(elements.gameLogPanel, elements.mobileRightContent);
@@ -190,6 +171,7 @@ window.FutureHoops.ui = window.FutureHoops.ui || {};
     elements.lineupGrid = document.getElementById("lineupGrid");
     elements.settingsAdvancedToggle = document.getElementById("settingsAdvancedToggle");
     elements.settingsAdvancedInfo = document.getElementById("settingsAdvancedInfo");
+    elements.settingsChangelogButton = document.getElementById("settingsChangelogButton");
     elements.settingsGhostToggle = document.getElementById("settingsGhostToggle");
     elements.settingsDesignerGhostToggle = document.getElementById("settingsDesignerGhostToggle");
     elements.settingsAnnotationGhostToggle = document.getElementById(
@@ -213,6 +195,13 @@ window.FutureHoops.ui = window.FutureHoops.ui || {};
     elements.settingsOverviewInfo = document.getElementById("settingsOverviewInfo");
     elements.settingsOverviewModal = document.getElementById("settingsOverviewModal");
     elements.settingsOverviewModalClose = document.getElementById("settingsOverviewModalClose");
+    elements.settingsChangelogModal = document.getElementById("settingsChangelogModal");
+    elements.settingsChangelogModalClose = document.getElementById("settingsChangelogModalClose");
+    elements.confirmActionModal = document.getElementById("confirmActionModal");
+    elements.confirmActionModalTitle = document.getElementById("confirmActionModalTitle");
+    elements.confirmActionModalBody = document.getElementById("confirmActionModalBody");
+    elements.confirmActionModalCancel = document.getElementById("confirmActionModalCancel");
+    elements.confirmActionModalConfirm = document.getElementById("confirmActionModalConfirm");
     elements.resetDataModal = document.getElementById("resetDataModal");
     elements.resetDataModalCancel = document.getElementById("resetDataModalCancel");
     elements.resetDataModalConfirm = document.getElementById("resetDataModalConfirm");

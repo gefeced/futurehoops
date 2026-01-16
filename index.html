@@ -84,6 +84,7 @@
             </label>
             <button class="settings-help" id="settingsAdvancedInfo" type="button" aria-label="About Advanced Mode">?</button>
           </div>
+          <button class="sim-btn" type="button" id="settingsChangelogButton">View Changelog</button>
         </div>
         <div class="settings-card settings-card--danger">
           <div class="settings-title">Data Reset</div>
@@ -722,7 +723,7 @@
   </main>
 
   <button class="mobile-panel-toggle mobile-panel-toggle--left" id="mobileLeftToggle" type="button" aria-label="Open left panel">Tools</button>
-  <button class="mobile-panel-toggle mobile-panel-toggle--right" id="mobileRightToggle" type="button" aria-label="Open right panel">Context</button>
+  <button class="mobile-panel-toggle mobile-panel-toggle--right" id="mobileRightToggle" type="button" aria-label="Open right panel">Play Details</button>
   <div class="mobile-panel-overlay" id="mobilePanelOverlay" aria-hidden="true"></div>
   <aside class="mobile-panel mobile-panel--left" id="mobileLeftPanel" aria-hidden="true">
     <button class="mobile-panel-close" id="mobileLeftClose" type="button" aria-label="Close left panel">×</button>
@@ -780,6 +781,40 @@
       </div>
       <div class="modal-actions">
         <button class="sim-btn" type="button" id="settingsOverviewModalClose">Close</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="settingsChangelogModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="settingsChangelogModalTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span class="modal-icon">?</span>
+        <div class="modal-title" id="settingsChangelogModalTitle">Changelog</div>
+      </div>
+      <div class="modal-body">
+        <p><strong>v1.01</strong></p>
+        <p>- Added Settings changelog.</p>
+        <p>- Annotation tools no longer show a selected arrow unless the tool is active.</p>
+        <p>- Clicking empty court space now clears a selected player in Place/Select.</p>
+        <p><strong>v1.00</strong></p>
+        <p>- Initial 1.0 release features.</p>
+      </div>
+      <div class="modal-actions">
+        <button class="sim-btn" type="button" id="settingsChangelogModalClose">Close</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="confirmActionModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="confirmActionModalTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span class="modal-icon modal-icon--warning">!</span>
+        <div class="modal-title" id="confirmActionModalTitle">Confirm Action</div>
+      </div>
+      <div class="modal-body" id="confirmActionModalBody">
+        <p>Are you sure you want to continue?</p>
+      </div>
+      <div class="modal-actions">
+        <button class="sim-btn" type="button" id="confirmActionModalCancel">Cancel</button>
+        <button class="neo-btn" type="button" id="confirmActionModalConfirm">Confirm</button>
       </div>
     </div>
   </div>

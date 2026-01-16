@@ -2249,6 +2249,8 @@ window.FutureHoops.uiDesigner = (() => {
     if (nextMode !== "annotation") {
       designerState.annotationDraft = null;
     }
+    syncAnnotationTypeButtons();
+    syncAnnotationPalette();
     if (elements.designerToolButtons.length) {
       elements.designerToolButtons.forEach((button) => {
         const isActive = button.dataset.designerTool === nextMode;
@@ -2290,7 +2292,9 @@ window.FutureHoops.uiDesigner = (() => {
       return;
     }
     elements.designerAnnotationTypeButtons.forEach((button) => {
-      const isActive = button.dataset.annotationType === designerState.annotationMode.type;
+      const isActive =
+        designerState.mode === "annotation" &&
+        button.dataset.annotationType === designerState.annotationMode.type;
       button.classList.toggle("is-active", isActive);
     });
   }
@@ -2302,7 +2306,9 @@ window.FutureHoops.uiDesigner = (() => {
     }
     if (elements.designerAnnotationColorButtons.length) {
       elements.designerAnnotationColorButtons.forEach((button) => {
-        const isActive = button.dataset.annotationColor === designerState.annotationMode.color;
+        const isActive =
+          designerState.mode === "annotation" &&
+          button.dataset.annotationColor === designerState.annotationMode.color;
         button.classList.toggle("is-active", isActive);
       });
     }
@@ -2576,6 +2582,11 @@ window.FutureHoops.uiDesigner = (() => {
         x: point.x - ballPoint.x * metrics.width,
         y: point.y - ballPoint.y * metrics.height
       };
+      renderDesignerCourt();
+      return;
+    }
+    if (!hit && selection?.type === "player" && designerState.mode === "edit") {
+      setDesignerSelection(null);
       renderDesignerCourt();
       return;
     }
