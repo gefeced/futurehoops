@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FutureHoops | Player Profile</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="mobile-warning" id="mobileWarning" role="alert" aria-hidden="true">
+    <span>⚠ Full Mobile Compatibility Still In Progress. Sorry for your inconvenience.</span>
+    <button class="mobile-warning-close" id="mobileWarningClose" type="button" aria-label="Dismiss mobile warning">×</button>
+  </div>
+  <main class="hud" data-advanced-mode="false" data-active-tab="designer">
+    <header class="panel panel--header" data-float="slow">
+      <div class="brand">
+        <div class="brand-title">FUTURE<span>HOOPS</span></div>
+        <div class="brand-subtitle">Player Profile Engine</div>
+      </div>
+      <div class="header-status">
+        <div class="status-label">Analytics Core</div>
+        <div class="status-value">ONLINE</div>
+        <div class="status-meta">Session: Profile Lab 03</div>
+      </div>
+    </header>
+
+    <section class="panel panel--tabs" data-float="fast">
+      <div class="tab-bar" role="tablist" aria-label="FutureHoops Modes">
+        <button class="tab-btn active" type="button" role="tab" aria-selected="true" data-tab-button="designer">
+          Play Designer
+        </button>
+        <button class="tab-btn" type="button" role="tab" aria-selected="false" data-tab-button="journal">
+          Journal
+        </button>
+        <button class="tab-btn" type="button" role="tab" aria-selected="false" data-tab-button="profile">
+          Profile Lab
+        </button>
+        <button class="tab-btn" type="button" role="tab" aria-selected="false" data-tab-button="athlete">
+          Profile
+        </button>
+        <button class="tab-btn" type="button" role="tab" aria-selected="false" data-tab-button="settings">
+          Settings
+        </button>
+      </div>
+    </section>
+
+    <section class="panel panel--settings" data-float="slow" data-tab="settings">
+      <div class="panel-header">
+        <div class="panel-header-title">
+          <span>SETTINGS</span>
+          <button class="settings-help" id="settingsOverviewInfo" type="button" aria-label="About Profile Lab and Play Designer">?</button>
+        </div>
+        <span class="panel-tag">Preferences</span>
+      </div>
+      <div class="settings-grid">
+        <div class="settings-card">
+          <div class="settings-title">Visual Options</div>
+          <label class="toggle-row">
+            <input id="settingsGhostToggle" type="checkbox" />
+            <span>Show Last Possession (Ghost Lines)</span>
+          </label>
+          <label class="toggle-row">
+            <input id="settingsDesignerGhostToggle" type="checkbox" />
+            <span>Show Previous Step Ghosts</span>
+          </label>
+          <label class="toggle-row">
+            <input id="settingsAnnotationGhostToggle" type="checkbox" />
+            <span>Ghost Previous Step Annotations</span>
+          </label>
+          <label class="toggle-row">
+            <input id="settingsPlayerNumberToggle" type="checkbox" />
+            <span>Show Player Numbers</span>
+          </label>
+          <label class="toggle-row">
+            <input id="settingsMobileWarningToggle" type="checkbox" />
+            <span>Show Mobile Compatibility Warning</span>
+          </label>
+        </div>
+        <div class="settings-card">
+          <div class="settings-title">Experience</div>
+          <div class="settings-row">
+            <label class="toggle-row">
+              <input id="settingsAdvancedToggle" type="checkbox" />
+              <span>Advanced Mode</span>
+            </label>
+            <button class="settings-help" id="settingsAdvancedInfo" type="button" aria-label="About Advanced Mode">?</button>
+          </div>
+          <button class="sim-btn" type="button" id="settingsChangelogButton">View Changelog</button>
+        </div>
+        <div class="settings-card">
+          <div class="settings-title">Journal</div>
+          <div class="settings-note">Manage journal exports and available tags.</div>
+          <div class="settings-actions">
+            <button class="sim-btn" type="button" id="journalExportButton">Export Journal Data</button>
+            <button class="sim-btn" type="button" id="journalImportButton">Import Journal Data</button>
+          </div>
+          <input id="journalImportInput" type="file" accept=".json,application/json" hidden />
+          <div class="settings-row settings-row--stack">
+            <label class="input-group">
+              <span>Add Tag</span>
+              <input id="journalTagInput" type="text" placeholder="Review, Guide, Journal" />
+            </label>
+            <button class="neo-btn" type="button" id="journalAddTagButton">Add Tag</button>
+          </div>
+          <div class="tag-chip-list" id="journalSettingsTagList"></div>
+        </div>
+        <div class="settings-card settings-card--danger">
+          <div class="settings-title">Data Reset</div>
+          <div class="settings-note">Clears plays, roster, and settings.</div>
+          <button class="neo-btn settings-reset" id="settingsResetAll" type="button">Reset All Data</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel panel--journal" data-float="slow" data-tab="journal">
+      <div class="panel-header panel-header--journal">
+        <div class="panel-header-title">
+          <span>JOURNAL</span>
+          <div class="journal-meta" id="journalMeta">No entry selected.</div>
+        </div>
+        <span class="panel-tag">Notes &amp; Media</span>
+      </div>
+      <div class="journal-layout">
+        <aside class="journal-list-card" id="journalListCard">
+          <div class="journal-list-head">
+            <div class="journal-list-title">Entries</div>
+            <label class="input-group">
+              <span>Filter Tag</span>
+              <select id="journalFilterTag"></select>
+            </label>
+          </div>
+          <div class="journal-entry-list" id="journalEntryList"></div>
+        </aside>
+        <div class="journal-main">
+          <div class="journal-toolbar">
+            <div class="journal-nav">
+              <button class="sim-btn" type="button" id="journalPrevButton">&lt;</button>
+              <button class="sim-btn" type="button" id="journalListToggle">List</button>
+              <button class="sim-btn" type="button" id="journalNextButton">&gt;</button>
+            </div>
+            <div class="journal-actions">
+              <button class="neo-btn" type="button" id="journalNewEntryButton">New Entry</button>
+            </div>
+          </div>
+          <div class="journal-editor">
+            <label class="input-group">
+              <span>Entry Title</span>
+              <input id="journalTitleInput" type="text" placeholder="Practice review, game notes, scouting..." />
+            </label>
+            <div class="journal-tag-block">
+              <div class="play-tool-label">Tags</div>
+              <div class="tag-chip-list" id="journalTagList"></div>
+            </div>
+            <label class="input-group">
+              <span>Journal Text</span>
+              <textarea id="journalBodyInput" rows="10" placeholder="Write your entry here..."></textarea>
+            </label>
+            <div class="journal-media-actions">
+              <button class="sim-btn" type="button" id="journalMediaButton">Add Images / Videos</button>
+              <input id="journalMediaInput" type="file" accept="image/*,video/*" multiple hidden />
+            </div>
+            <div class="journal-media-grid" id="journalMediaGrid"></div>
+            <div class="journal-status" id="journalStatus">Ready.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel panel--carousel" data-float="med" data-tab="profile">
+      <div class="panel-header">
+        <span>PLAYER SELECT</span>
+        <span class="panel-tag">Multi-Profile</span>
+      </div>
+      <div class="carousel">
+        <button class="carousel-btn left" type="button" aria-label="Scroll left">&lt;&lt;</button>
+        <div class="carousel-track" id="playerTrack" role="list"></div>
+        <button class="carousel-btn right" type="button" aria-label="Scroll right">&gt;&gt;</button>
+      </div>
+      <div class="carousel-actions">
+        <button class="neo-btn" id="addPlayer" type="button">+ New Player</button>
+      </div>
+      <div class="lineup-panel" id="lineupPanel">
+        <div class="lineup-header">
+          <span>COURT LINEUP</span>
+          <span class="panel-tag">Offense 1-5</span>
+        </div>
+        <div class="lineup-grid" id="lineupGrid"></div>
+      </div>
+    </section>
+
+    <section class="panel panel--athlete-profile" data-float="slow" data-tab="athlete">
+      <div class="panel-header">
+        <div class="panel-header-title">
+          <span>PROFILE</span>
+        </div>
+        <span class="panel-tag">Manual Tracking Hub</span>
+      </div>
+      <div class="athlete-profile-shell">
+        <div class="athlete-subtabs" role="tablist" aria-label="Profile sections">
+          <button class="sim-btn is-active" type="button" data-athlete-subtab="overview">Overview</button>
+          <button class="sim-btn" type="button" data-athlete-subtab="bounties">Bounties</button>
+        </div>
+
+        <div class="athlete-profile-view is-active" data-athlete-view="overview">
+          <div class="athlete-profile-grid">
+            <div class="athlete-profile-card athlete-profile-card--identity">
+              <div class="athlete-card-head">
+                <div>
+                  <div class="athlete-card-title">Player Identity</div>
+                  <div class="athlete-card-subtitle">Fill out your own player profile.</div>
+                </div>
+                <div class="athlete-badge" id="athleteProfileBadge">Prospect</div>
+              </div>
+              <div class="input-row">
+                <label class="input-group">
+                  <span>Full Name</span>
+                  <input id="athleteProfileName" type="text" placeholder="Jordan Carter" />
+                </label>
+                <label class="input-group">
+                  <span>Team / School</span>
+                  <input id="athleteProfileTeam" type="text" placeholder="North City Prep" />
+                </label>
+              </div>
+              <div class="input-row">
+                <label class="input-group">
+                  <span>Position</span>
+                  <input id="athleteProfilePosition" type="text" placeholder="PG / SG" />
+                </label>
+                <label class="input-group">
+                  <span>Class Year</span>
+                  <input id="athleteProfileClassYear" type="text" placeholder="2028" />
+                </label>
+              </div>
+              <div class="input-row">
+                <label class="input-group">
+                  <span>Hometown</span>
+                  <input id="athleteProfileHometown" type="text" placeholder="Edmonton, AB" />
+                </label>
+                <label class="input-group">
+                  <span>Jersey</span>
+                  <input id="athleteProfileJersey" type="text" placeholder="#3" />
+                </label>
+              </div>
+              <label class="input-group">
+                <span>About</span>
+                <textarea id="athleteProfileBio" rows="5" placeholder="Write a short player summary, strengths, recent progress, recruiting notes, or training focus."></textarea>
+              </label>
+            </div>
+
+            <div class="athlete-profile-card">
+              <div class="athlete-card-title">Season Statistics</div>
+              <div class="athlete-stat-grid">
+                <label class="input-group">
+                  <span>PPG</span>
+                  <input id="athleteStatPpg" type="number" min="0" step="0.1" placeholder="18.4" />
+                </label>
+                <label class="input-group">
+                  <span>RPG</span>
+                  <input id="athleteStatRpg" type="number" min="0" step="0.1" placeholder="6.2" />
+                </label>
+                <label class="input-group">
+                  <span>APG</span>
+                  <input id="athleteStatApg" type="number" min="0" step="0.1" placeholder="4.8" />
+                </label>
+                <label class="input-group">
+                  <span>SPG</span>
+                  <input id="athleteStatSpg" type="number" min="0" step="0.1" placeholder="1.9" />
+                </label>
+                <label class="input-group">
+                  <span>BPG</span>
+                  <input id="athleteStatBpg" type="number" min="0" step="0.1" placeholder="0.8" />
+                </label>
+                <label class="input-group">
+                  <span>FG%</span>
+                  <input id="athleteStatFg" type="number" min="0" max="100" step="0.1" placeholder="47.5" />
+                </label>
+                <label class="input-group">
+                  <span>3PT%</span>
+                  <input id="athleteStatThree" type="number" min="0" max="100" step="0.1" placeholder="38.2" />
+                </label>
+                <label class="input-group">
+                  <span>FT%</span>
+                  <input id="athleteStatFt" type="number" min="0" max="100" step="0.1" placeholder="84.1" />
+                </label>
+              </div>
+              <div class="athlete-summary-strip" id="athleteSummaryStrip"></div>
+            </div>
+
+            <div class="athlete-profile-card athlete-profile-card--games">
+              <div class="athlete-card-head">
+                <div>
+                  <div class="athlete-card-title">Past Games</div>
+                  <div class="athlete-card-subtitle">Manual game-by-game tracking.</div>
+                </div>
+                <div class="athlete-card-title" id="athleteGameCount">0 Games</div>
+              </div>
+              <div class="athlete-games-layout">
+                <div class="athlete-game-form">
+                  <div class="input-row">
+                    <label class="input-group">
+                      <span>Opponent</span>
+                      <input id="athleteGameOpponent" type="text" placeholder="Central Academy" />
+                    </label>
+                    <label class="input-group">
+                      <span>Date</span>
+                      <input id="athleteGameDate" type="date" />
+                    </label>
+                  </div>
+                  <div class="input-row">
+                    <label class="input-group">
+                      <span>Points</span>
+                      <input id="athleteGamePoints" type="number" min="0" step="1" placeholder="24" />
+                    </label>
+                    <label class="input-group">
+                      <span>Rebounds</span>
+                      <input id="athleteGameRebounds" type="number" min="0" step="1" placeholder="7" />
+                    </label>
+                  </div>
+                  <div class="input-row">
+                    <label class="input-group">
+                      <span>Assists</span>
+                      <input id="athleteGameAssists" type="number" min="0" step="1" placeholder="5" />
+                    </label>
+                    <label class="input-group">
+                      <span>Result</span>
+                      <select id="athleteGameResult">
+                        <option value="W">Win</option>
+                        <option value="L">Loss</option>
+                      </select>
+                    </label>
+                  </div>
+                  <label class="input-group">
+                    <span>Notes</span>
+                    <textarea id="athleteGameNotes" rows="4" placeholder="How you played, what you learned, clutch moments, matchup notes."></textarea>
+                  </label>
+                  <button class="neo-btn" type="button" id="athleteAddGame">Add Game</button>
+                </div>
+                <div class="athlete-game-list" id="athleteGameList"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="athlete-profile-view" data-athlete-view="bounties">
+          <div class="athlete-profile-card athlete-profile-card--bounties">
+            <div class="athlete-card-head">
+              <div>
+                <div class="athlete-card-title">Bounties</div>
+                <div class="athlete-card-subtitle">Set manual goals and track progress over time.</div>
+              </div>
+              <div class="athlete-badge" id="athleteBountyBadge">Not Signed Up</div>
+            </div>
+            <div class="athlete-bounty-layout">
+              <div class="athlete-bounty-form">
+                <div class="input-row">
+                  <label class="input-group">
+                    <span>Bounty Title</span>
+                    <input id="athleteBountyTitle" type="text" placeholder="Make 250 game-speed threes" />
+                  </label>
+                  <label class="input-group">
+                    <span>Unit</span>
+                    <input id="athleteBountyUnit" type="text" placeholder="shots, reps, wins, workouts" />
+                  </label>
+                </div>
+                <div class="input-row">
+                  <label class="input-group">
+                    <span>Current</span>
+                    <input id="athleteBountyCurrent" type="number" min="0" step="1" placeholder="40" />
+                  </label>
+                  <label class="input-group">
+                    <span>Target</span>
+                    <input id="athleteBountyTarget" type="number" min="1" step="1" placeholder="250" />
+                  </label>
+                </div>
+                <div class="input-row">
+                  <label class="input-group">
+                    <span>Due Date</span>
+                    <input id="athleteBountyDueDate" type="date" />
+                  </label>
+                  <label class="input-group">
+                    <span>Status</span>
+                    <select id="athleteBountyStatus">
+                      <option value="active">Active</option>
+                      <option value="paused">Paused</option>
+                      <option value="complete">Complete</option>
+                    </select>
+                  </label>
+                </div>
+                <label class="input-group">
+                  <span>Notes</span>
+                  <textarea id="athleteBountyNotes" rows="4" placeholder="Add context, checkpoints, or why this goal matters."></textarea>
+                </label>
+                <button class="neo-btn" type="button" id="athleteAddBounty">Create Bounty</button>
+              </div>
+              <div class="athlete-bounty-list" id="athleteBountyList"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="play-status" id="athleteProfileStatus">Profile ready.</div>
+      </div>
+    </section>
+
+    <section class="panel panel--profile" data-float="slow" data-tab="profile">
+      <div class="panel-header">
+        <span>PLAYER PROFILE</span>
+        <span class="panel-tag">Core Ratings</span>
+      </div>
+      <div class="profile-grid profile-grid--compact">
+        <div class="profile-card">
+          <div class="profile-avatar">
+            <div class="avatar-ring"></div>
+            <div class="avatar-silhouette"></div>
+            <div class="avatar-initials" id="profileInitials">AN</div>
+          </div>
+          <div class="profile-main">
+            <label class="input-group">
+              <span>Name</span>
+              <input id="playerName" type="text" placeholder="Player name" />
+            </label>
+            <div class="input-row">
+              <label class="input-group">
+                <span>Position</span>
+                <select id="playerPosition">
+                  <option>PG</option>
+                  <option>SG</option>
+                  <option>SF</option>
+                  <option>PF</option>
+                  <option>C</option>
+                </select>
+              </label>
+              <label class="input-group">
+                <span>Archetype</span>
+                <select id="playerArchetype">
+                  <option>Shooter</option>
+                  <option>Slasher</option>
+                  <option>Two-Way</option>
+                  <option>Playmaker</option>
+                </select>
+              </label>
+            </div>
+            <div class="profile-meta">
+              <div>
+                <div class="meta-label">Profile ID</div>
+                <div class="meta-value" id="profileId">FH-001</div>
+              </div>
+              <div>
+                <div class="meta-label">Archetype Focus</div>
+                <div class="meta-value" id="archetypeFocus">Shot Creation</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="metrics" hidden>
+          <div class="metric-block">
+            <div class="metric-head">
+              <span>Confidence Matrix</span>
+              <span class="metric-tag">Modifier</span>
+            </div>
+            <div class="metric-bars">
+              <div class="metric-row" data-confidence="shooting">
+                <div class="metric-label">Shooting</div>
+                <div class="metric-stack">
+                  <div class="metric-bar"><div class="metric-fill"></div></div>
+                  <input class="metric-input" type="range" min="0" max="100" step="1" data-confidence-input="shooting" disabled />
+                </div>
+                <div class="metric-value">0</div>
+              </div>
+              <div class="metric-row" data-confidence="defense">
+                <div class="metric-label">Defense</div>
+                <div class="metric-stack">
+                  <div class="metric-bar"><div class="metric-fill"></div></div>
+                  <input class="metric-input" type="range" min="0" max="100" step="1" data-confidence-input="defense" disabled />
+                </div>
+                <div class="metric-value">0</div>
+              </div>
+              <div class="metric-row" data-confidence="finishing">
+                <div class="metric-label">Finishing</div>
+                <div class="metric-stack">
+                  <div class="metric-bar"><div class="metric-fill"></div></div>
+                  <input class="metric-input" type="range" min="0" max="100" step="1" data-confidence-input="finishing" disabled />
+                </div>
+                <div class="metric-value">0</div>
+              </div>
+            </div>
+          </div>
+          <div class="metric-block">
+            <div class="metric-head">
+              <span>Fatigue</span>
+              <span class="metric-tag">Recovery</span>
+            </div>
+            <div class="fatigue">
+              <div class="fatigue-meter">
+                <div class="fatigue-fill" id="fatigueFill"></div>
+              </div>
+              <input class="fatigue-input" id="fatigueInput" type="range" min="0" max="100" step="1" disabled />
+              <div class="fatigue-meta">
+                <div class="fatigue-value" id="fatigueValue">0</div>
+                <div class="fatigue-label">/100</div>
+              </div>
+              <div class="fatigue-note">Auto recovery active</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel panel--ratings" data-float="med" data-tab="profile" hidden>
+      <div class="panel-header">
+        <span>CORE RATINGS</span>
+        <span class="panel-tag">0 - 100</span>
+      </div>
+      <div class="ratings-grid" id="ratingsGrid"></div>
+    </section>
+
+    <section class="panel panel--projections" data-float="fast" data-tab="profile" hidden>
+      <div class="panel-header">
+        <span>REAL PERFORMANCE</span>
+        <span class="panel-tag">Derived %</span>
+      </div>
+      <div class="projection-grid">
+        <div class="projection-card">
+          <div class="projection-title">3PT%</div>
+          <div class="projection-value" id="pct3">0%</div>
+          <div class="projection-sub">Range model</div>
+        </div>
+        <div class="projection-card">
+          <div class="projection-title">MID%</div>
+          <div class="projection-value" id="pctMid">0%</div>
+          <div class="projection-sub">Midrange model</div>
+        </div>
+        <div class="projection-card">
+          <div class="projection-title">LAYUP%</div>
+          <div class="projection-value" id="pctLay">0%</div>
+          <div class="projection-sub">Finishing model</div>
+        </div>
+        <div class="projection-card">
+          <div class="projection-title">FT%</div>
+          <div class="projection-value" id="pctFt">0%</div>
+          <div class="projection-sub">Free throw model</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel panel--sim advanced-only" data-float="med" data-tab="profile" hidden>
+      <div class="panel-header">
+        <span>SIMULATION LAB</span>
+        <span class="panel-tag">Phase 2</span>
+      </div>
+      <div class="sim-grid">
+        <div class="sim-controls">
+          <div class="sim-actions-row">
+            <button class="neo-btn" id="simStart" type="button">Start Possession</button>
+            <button class="neo-btn" id="simEnd" type="button">End Possession</button>
+          </div>
+          <div class="sim-actions">
+            <button class="sim-btn" data-sim-action="three" type="button">Shoot 3</button>
+            <button class="sim-btn" data-sim-action="mid" type="button">Shoot Mid</button>
+            <button class="sim-btn" data-sim-action="layup" type="button">Layup</button>
+            <button class="sim-btn" data-sim-action="ft" type="button">Free Throw</button>
+            <button class="sim-btn" data-sim-action="drive" type="button">Drive</button>
+            <button class="sim-btn" data-sim-action="pass" type="button">Pass</button>
+          </div>
+          <div class="sim-plays">
+            <div class="sim-subtitle">Plays Mode</div>
+            <label class="input-group">
+              <span>Playbook</span>
+              <select id="playSelect"></select>
+            </label>
+            <div class="sim-actions-row">
+              <button class="sim-btn" id="runPlay" type="button">Run Play</button>
+              <button class="sim-btn" id="drawPlayToggle" type="button">Draw Play</button>
+            </div>
+            <div class="sim-opportunities" id="playOpportunities">
+              <div class="sim-opportunity-title">Opportunities</div>
+              <button class="sim-btn" id="shootPrimary" type="button" disabled>Shoot Primary</button>
+              <button class="sim-btn" id="passSecondary" type="button" disabled>Pass Secondary</button>
+              <button class="sim-btn" id="resetPlay" type="button" disabled>Reset</button>
+            </div>
+            <div class="sim-play-info" id="playInfo">Awaiting play call.</div>
+          </div>
+          <div class="sim-court">
+            <canvas id="courtCanvas" class="court-canvas" width="520" height="360"></canvas>
+            <button class="sim-btn" id="simAiShot" type="button">AI Take Shot</button>
+          </div>
+        </div>
+        <div class="sim-defender">
+          <div class="sim-subtitle">Defender Controls</div>
+          <label class="input-group">
+            <span>Mode</span>
+            <select id="defenderMode">
+              <option value="ai">AI Defender</option>
+              <option value="manual">Manual Defender</option>
+            </select>
+          </label>
+          <div class="sim-slider">
+            <div class="sim-slider-head">
+              <span>Defender Rating</span>
+              <span class="sim-value" id="defenderRatingValue">70</span>
+            </div>
+            <input id="defenderRating" type="range" min="0" max="100" step="1" value="70" />
+          </div>
+          <div class="sim-slider">
+            <div class="sim-slider-head">
+              <span>Contest Level</span>
+              <span class="sim-value" id="contestLevelValue">0.50</span>
+            </div>
+            <input id="contestLevel" type="range" min="0" max="1" step="0.01" value="0.5" />
+          </div>
+          <div class="sim-slider">
+            <div class="sim-slider-head">
+              <span>Shot Difficulty</span>
+              <span class="sim-value" id="shotDifficultyValue">45</span>
+            </div>
+            <input id="shotDifficulty" type="range" min="0" max="100" step="1" value="45" />
+          </div>
+        </div>
+        <div class="sim-log">
+          <div class="sim-subtitle">Possession Log</div>
+          <div class="sim-log-rows" id="simLog"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel panel--play-tools" id="designerToolsPanel" data-float="slow" data-tab="designer">
+      <div class="panel-header">
+        <span>PLAY DESIGNER</span>
+        <span class="panel-tag">Tools</span>
+      </div>
+      <div class="play-sidebar">
+        <details class="play-section" open>
+          <summary>Tools</summary>
+          <div class="play-tool-buttons">
+            <button class="sim-btn" type="button" data-designer-tool="edit">Place/Select</button>
+            <button class="sim-btn" type="button" data-designer-tool="route">Route</button>
+            <button class="sim-btn" type="button" data-designer-tool="pass">Pass</button>
+            <button class="sim-btn" type="button" data-designer-tool="delete">Delete</button>
+          </div>
+          <div class="play-tool-group is-compact" id="designerPlaceGroup">
+            <div class="play-tool-label">Place</div>
+            <div class="play-tool-buttons">
+              <button class="sim-btn is-active" type="button" data-designer-place="offense">Offense</button>
+              <button class="sim-btn" type="button" data-designer-place="defense">Defense</button>
+              <button class="sim-btn" type="button" data-designer-place="ball">Ball</button>
+            </div>
+            <div class="play-tool-hint">Max 10 players</div>
+          </div>
+          <div class="play-tool-group is-compact" id="designerAnnotationGroup">
+            <div class="play-tool-label">Annotations</div>
+            <div class="play-tool-buttons">
+              <button class="sim-btn is-active" type="button" data-annotation-type="straight">Straight Arrow</button>
+              <button class="sim-btn" type="button" data-annotation-type="free">Free Arrow</button>
+              <button class="sim-btn" type="button" data-annotation-type="squiggle">Squiggle Arrow</button>
+              <button class="sim-btn" type="button" data-annotation-type="dotted">Dotted Line</button>
+            </div>
+            <div class="annotation-color-row" role="group" aria-label="Annotation colors">
+              <button class="annotation-color is-active" type="button" data-annotation-color="#ffffff" style="--swatch-color: #ffffff;" aria-label="White"></button>
+              <button class="annotation-color" type="button" data-annotation-color="#ff4d4d" style="--swatch-color: #ff4d4d;" aria-label="Red"></button>
+              <button class="annotation-color advanced-only" type="button" data-annotation-color="#39f6ff" style="--swatch-color: #39f6ff;" aria-label="Cyan"></button>
+              <button class="annotation-color advanced-only" type="button" data-annotation-color="#ffd166" style="--swatch-color: #ffd166;" aria-label="Amber"></button>
+              <button class="annotation-color advanced-only" type="button" data-annotation-color="#4cff9a" style="--swatch-color: #4cff9a;" aria-label="Green"></button>
+              <button class="annotation-color advanced-only" type="button" data-annotation-color="#ff9f1c" style="--swatch-color: #ff9f1c;" aria-label="Orange"></button>
+            </div>
+            <div class="annotation-actions">
+              <button class="sim-btn" type="button" id="designerDeleteAnnotation">Delete Selected</button>
+              <button class="sim-btn advanced-only" type="button" id="designerClearAnnotations">Clear All</button>
+            </div>
+          </div>
+          <div class="play-tool-group is-compact">
+            <div class="play-tool-label">Ball Holder</div>
+            <select id="designerBallHolder" class="play-select"></select>
+          </div>
+        </details>
+
+        <details class="play-section" open>
+          <summary>Steps</summary>
+          <div class="step-list" id="designerStepList"></div>
+          <div class="step-actions">
+            <button class="sim-btn" type="button" id="designerAddStep">+ Step</button>
+            <button class="sim-btn" type="button" id="designerDeleteStep">Delete</button>
+          </div>
+          <div class="step-actions advanced-only">
+            <button class="sim-btn" type="button" id="designerStepUp">Step Up</button>
+            <button class="sim-btn" type="button" id="designerStepDown">Step Down</button>
+          </div>
+        </details>
+
+        <div class="play-advanced-group advanced-only">
+          <div class="play-advanced-title">Advanced</div>
+          <details class="play-section" open>
+            <summary>Step Settings</summary>
+            <label class="input-group">
+              <span>Name</span>
+              <input id="designerStepName" type="text" placeholder="Step 1" />
+            </label>
+            <label class="input-group">
+              <span>Duration (sec)</span>
+              <input id="designerStepDuration" type="number" min="0.2" max="20" step="0.1" />
+            </label>
+            <div class="step-setting-row">
+              <span>End Mode</span>
+              <span>Hybrid (timer OR actions)</span>
+            </div>
+            <label class="toggle-row">
+              <input id="designerStepParallel" type="checkbox" />
+              <span>Allow Parallel Actions</span>
+            </label>
+          </details>
+
+          <div class="play-tool-group is-compact">
+            <div class="play-tool-label">Quick</div>
+            <div class="play-tool-buttons">
+              <button class="sim-btn" type="button" id="designerClearSelection">Clear Selection</button>
+              <button class="sim-btn" type="button" id="designerClearRoutes">Clear Routes</button>
+              <button class="sim-btn" type="button" id="designerClearPasses">Clear Passes</button>
+            </div>
+          </div>
+
+          <details class="play-section" id="designerContextBlock" open>
+            <summary>Context</summary>
+            <div class="play-context" id="designerContext">
+              <div class="context-empty" data-context-empty>Select a player, route, pass, or ball.</div>
+            <div class="context-panel" data-context="player">
+              <div class="context-title" id="designerContextPlayerLabel">Player</div>
+              <label class="toggle-row">
+                <input id="designerScreenToggle" type="checkbox" />
+                <span>Screening in this step</span>
+              </label>
+              <label class="toggle-row">
+                <input id="designerTagToggle" type="checkbox" />
+                <span>Show Tag</span>
+              </label>
+              <label class="input-group">
+                <span>Tag</span>
+                <input id="designerTagInput" type="text" placeholder="e.g. Screener" />
+              </label>
+            </div>
+              <div class="context-panel" data-context="route">
+                <div class="context-title" id="designerContextRouteLabel">Route</div>
+                <button class="sim-btn" type="button" id="designerDeleteRoute">Delete Route</button>
+              </div>
+              <div class="context-panel" data-context="pass">
+                <div class="context-title" id="designerContextPassLabel">Pass</div>
+                <div class="context-pass">
+                  <label class="input-group">
+                    <span>Pass Time</span>
+                    <input id="designerPassTime" type="number" min="0" max="20" step="0.1" />
+                  </label>
+                  <input id="designerPassSlider" type="range" min="0" max="2" step="0.1" />
+                </div>
+                <button class="sim-btn" type="button" id="designerDeletePass">Delete Pass</button>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel panel--play-court" data-float="med" data-tab="designer">
+      <div class="panel-header">
+        <span>COURT CANVAS</span>
+        <span class="panel-tag">Draw &amp; Route</span>
+      </div>
+      <div class="play-court">
+        <canvas id="designerCourt" class="court-canvas designer-canvas" width="560" height="380"></canvas>
+        <div class="designer-preview-controls" id="designerPreviewControls" aria-hidden="true">
+          <div class="preview-line">
+            <span class="preview-label" id="designerPreviewStep">Step 1 / 1</span>
+            <span class="preview-label" id="designerPreviewTimer">0.0 / 2.0s</span>
+          </div>
+          <div class="preview-actions">
+            <button class="sim-btn" type="button" id="designerPreviewPause">Pause</button>
+            <button class="sim-btn" type="button" id="designerPreviewStop">Stop</button>
+          </div>
+        </div>
+        <div class="play-court-legend">
+          <span><span class="legend-dot legend-dot--offense"></span>Offense</span>
+          <span><span class="legend-dot legend-dot--defense"></span>Defense</span>
+          <span><span class="legend-dot legend-dot--ball"></span>Ball</span>
+        </div>
+        <div class="designer-primary-actions">
+          <button class="sim-btn" type="button" id="designerPreviewPlay">Play</button>
+        </div>
+        <div class="designer-middle advanced-only" id="designerMiddlePanel">
+          <div class="designer-mid-panel is-active" data-designer-middle="preview">
+            <div class="designer-mid-header">
+              <span class="designer-mid-title" id="designerMidPlayName">Play Preview</span>
+              <span class="designer-mid-sub" id="designerMidStep">Step -- / --</span>
+            </div>
+            <div class="designer-mid-actions">
+              <button class="sim-btn" type="button" id="designerMidPreviewPause">Pause</button>
+              <button class="sim-btn" type="button" id="designerMidPreviewStop">Stop</button>
+            </div>
+          </div>
+          <div class="designer-mid-panel" data-designer-middle="player">
+            <div class="designer-mid-header">
+              <span class="designer-mid-title" id="designerMidPlayerName">Player</span>
+              <span class="designer-mid-sub" id="designerMidPlayerMeta">#-- · --</span>
+            </div>
+            <div class="designer-mid-grid">
+              <div>
+                <div class="designer-mid-label">Core Ratings</div>
+                <div class="designer-mid-list" id="designerMidCoreRatings"></div>
+              </div>
+              <div>
+                <div class="designer-mid-label">Confidence</div>
+                <div class="designer-mid-list" id="designerMidConfidence"></div>
+              </div>
+            </div>
+          </div>
+          <div class="designer-mid-panel" data-designer-middle="route">
+            <div class="designer-mid-header">
+              <span class="designer-mid-title" id="designerMidRouteLabel">Route</span>
+            </div>
+            <div class="designer-mid-actions">
+              <button class="sim-btn" type="button" id="designerMidDeleteRoute">Delete Route</button>
+            </div>
+          </div>
+          <div class="designer-mid-panel" data-designer-middle="pass">
+            <div class="designer-mid-header">
+              <span class="designer-mid-title" id="designerMidPassLabel">Pass</span>
+            </div>
+            <div class="designer-mid-pass">
+              <label class="input-group">
+                <span>Pass Time</span>
+                <input id="designerMidPassTime" type="number" min="0" max="20" step="0.1" />
+              </label>
+              <input id="designerMidPassSlider" type="range" min="0" max="2" step="0.1" />
+            </div>
+            <button class="sim-btn" type="button" id="designerMidDeletePass">Delete Pass</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel panel--play-details" id="designerDetailsPanel" data-float="fast" data-tab="designer">
+      <div class="panel-header">
+        <span>PLAY DETAILS</span>
+        <span class="panel-tag">Save &amp; Load</span>
+      </div>
+      <div class="play-details">
+        <label class="input-group">
+          <span>Name</span>
+          <input id="designerPlayName" type="text" placeholder="Play name" />
+        </label>
+        <label class="input-group">
+          <span>Tags</span>
+          <input id="designerPlayTags" type="text" placeholder="Spacing, horns, flare" />
+        </label>
+        <label class="input-group">
+          <span>Notes</span>
+          <textarea id="designerPlayNotes" rows="4" placeholder="Timing, reads, counters"></textarea>
+        </label>
+        <label class="input-group">
+          <span>Court Layout</span>
+          <select id="designerCourtType">
+            <option value="half">Half Court</option>
+            <option value="full">Full Court</option>
+          </select>
+        </label>
+        <div class="play-actions">
+          <button class="neo-btn" id="designerNewPlay" type="button">Create Play</button>
+          <button class="neo-btn" id="designerSavePlay" type="button">Save Play</button>
+          <button class="neo-btn" id="designerDeletePlay" type="button">Delete Play</button>
+          <button class="neo-btn" id="designerDownloadPlay" type="button">Download</button>
+          <button class="neo-btn" id="designerUploadPlay" type="button">Upload</button>
+        </div>
+        <input id="designerUploadInput" type="file" accept=".json,application/json" hidden />
+        <label class="input-group">
+          <span>Load Play</span>
+          <select id="designerPlaySelect"></select>
+        </label>
+        <button class="sim-btn" id="designerLoadPlay" type="button">Load Selected</button>
+        <div class="play-detail-block" id="designerPlayerBlock">
+          <div class="play-detail-title">Players</div>
+          <div class="play-detail-list" id="designerPlayerList"></div>
+        </div>
+        <div class="play-status" id="designerStatus">Ready to draw.</div>
+      </div>
+    </section>
+
+  </main>
+
+  <button class="mobile-panel-toggle mobile-panel-toggle--left" id="mobileLeftToggle" type="button" aria-label="Open left panel">Tools</button>
+  <button class="mobile-panel-toggle mobile-panel-toggle--right" id="mobileRightToggle" type="button" aria-label="Open right panel">Play Details</button>
+  <div class="mobile-panel-overlay" id="mobilePanelOverlay" aria-hidden="true"></div>
+  <aside class="mobile-panel mobile-panel--left" id="mobileLeftPanel" aria-hidden="true">
+    <button class="mobile-panel-close" id="mobileLeftClose" type="button" aria-label="Close left panel">×</button>
+    <div class="mobile-panel-content" id="mobileLeftContent"></div>
+  </aside>
+  <aside class="mobile-panel mobile-panel--right" id="mobileRightPanel" aria-hidden="true">
+    <button class="mobile-panel-close" id="mobileRightClose" type="button" aria-label="Close right panel">×</button>
+    <div class="mobile-panel-content" id="mobileRightContent"></div>
+  </aside>
+  <div class="modal-overlay" id="modalOverlay" aria-hidden="true"></div>
+  <div class="modal" id="advancedModeModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="advancedModeModalTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span class="modal-icon">?</span>
+        <div class="modal-title" id="advancedModeModalTitle">Advanced Mode</div>
+      </div>
+      <div class="modal-body">
+        <p>Advanced Mode unlocks step controls, deeper play designer tools, and the Simulation Lab.</p>
+        <p>It is optional and intended for power users. Normal use does not require it.</p>
+      </div>
+      <div class="modal-actions">
+        <button class="sim-btn" type="button" id="advancedModeModalClose">Close</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="settingsOverviewModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="settingsOverviewModalTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span class="modal-icon">?</span>
+        <div class="modal-title" id="settingsOverviewModalTitle">How FutureHoops Works</div>
+      </div>
+      <div class="modal-body">
+        <p><strong>Profile Lab</strong> is your player roster workspace. Use it to create or select athletes, set positions and archetypes, and tune ratings, confidence, and fatigue. The lineup area shows which players are active for play design and game scenarios.</p>
+        <p><strong>Play Designer</strong> is for building plays step-by-step. Place offense and defense, draw routes and passes, set the ball holder, and preview timing. Steps always exist; Advanced Mode adds step controls, context details, and extra tools. Plays are saved locally so you can return and iterate later.</p>
+      </div>
+      <div class="modal-actions">
+        <button class="sim-btn" type="button" id="settingsOverviewModalClose">Close</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="settingsChangelogModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="settingsChangelogModalTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span class="modal-icon">?</span>
+        <div class="modal-title" id="settingsChangelogModalTitle">Changelog</div>
+      </div>
+      <div class="modal-body">
+        <p><strong>v1.01</strong></p>
+        <p>- Added Settings changelog.</p>
+        <p>- Annotation tools no longer show a selected arrow unless the tool is active.</p>
+        <p>- Clicking empty court space now clears a selected player in Place/Select.</p>
+        <p><strong>v1.00</strong></p>
+        <p>- Initial 1.0 release features.</p>
+      </div>
+      <div class="modal-actions">
+        <button class="sim-btn" type="button" id="settingsChangelogModalClose">Close</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="confirmActionModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="confirmActionModalTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span class="modal-icon modal-icon--warning">!</span>
+        <div class="modal-title" id="confirmActionModalTitle">Confirm Action</div>
+      </div>
+      <div class="modal-body" id="confirmActionModalBody">
+        <p>Are you sure you want to continue?</p>
+      </div>
+      <div class="modal-actions">
+        <button class="sim-btn" type="button" id="confirmActionModalCancel">Cancel</button>
+        <button class="neo-btn" type="button" id="confirmActionModalConfirm">Confirm</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="importConflictModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="importConflictModalTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span class="modal-icon modal-icon--warning">!</span>
+        <div class="modal-title" id="importConflictModalTitle">Play Already Exists</div>
+      </div>
+      <div class="modal-body" id="importConflictModalBody">
+        <p>A play with this name already exists.</p>
+        <p>Choose whether to overwrite it or import a new copy.</p>
+      </div>
+      <div class="modal-actions">
+        <button class="sim-btn" type="button" id="importConflictModalCancel">Cancel</button>
+        <button class="sim-btn" type="button" id="importConflictModalCopy">Create New</button>
+        <button class="neo-btn" type="button" id="importConflictModalOverwrite">Overwrite</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="resetDataModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="resetDataModalTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span class="modal-icon modal-icon--warning">!</span>
+        <div class="modal-title" id="resetDataModalTitle">Reset All Data</div>
+      </div>
+      <div class="modal-body">
+        <p>This will permanently delete all plays, roster data, and settings.</p>
+        <p>This action cannot be undone.</p>
+      </div>
+      <div class="modal-actions">
+        <button class="sim-btn" type="button" id="resetDataModalCancel">Cancel</button>
+        <button class="neo-btn" type="button" id="resetDataModalConfirm">Delete All</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="bountiesSignupModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="bountiesSignupModalTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span class="modal-icon">?</span>
+        <div class="modal-title" id="bountiesSignupModalTitle">Bounties</div>
+      </div>
+      <div class="modal-body">
+        <p>Would you like to sign up?</p>
+        <p>Create manual bounties to track goals, progress, and checkpoints inside your profile.</p>
+      </div>
+      <div class="modal-actions">
+        <button class="sim-btn" type="button" id="bountiesSignupLater">Later</button>
+        <button class="neo-btn" type="button" id="bountiesSignupYes">Yes</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="scripts/data.js"></script>
+  <script src="scripts/calculations.js"></script>
+  <script src="scripts/stepEditor.js"></script>
+  <script src="scripts/stepRender.js"></script>
+  <script src="scripts/stepRunner.js"></script>
+  <script src="scripts/sim.js"></script>
+  <script src="scripts/playEngine.js"></script>
+  <script src="scripts/settings.js"></script>
+  <script src="scripts/uiState.js"></script>
+  <script src="scripts/uiProfile.js"></script>
+  <script src="scripts/uiSim.js"></script>
+  <script src="scripts/uiDesigner.js"></script>
+  <script src="scripts/uiJournal.js"></script>
+  <script src="scripts/uiGame.js"></script>
+  <script src="scripts/uiSettings.js"></script>
+  <script src="scripts/uiAthleteProfile.js"></script>
+  <script src="scripts/uiEvents.js"></script>
+  <script src="scripts/ui.js"></script>
+  <script src="scripts/app.js"></script>
+</body>
+</html>
